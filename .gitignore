@@ -1,0 +1,6 @@
+secrets.py
+prev.txt
+exclude.txt
+
+__pycache__
+*.pyc
