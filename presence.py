@@ -2,11 +2,14 @@ import requests
 import sys
 import datetime
 
-sys.path.append('/home/jzplusplus/presence/')
+DIRECTORY = os.path.dirname(os.path.realpath(__file__)) + '/'
+sys.path.append(DIRECTORY)
+
 from UnifiAPI.UnifiAPI import UnifiAPI
 import secrets
 
-
+PREV_FILE = DIRECTORY + 'prev.txt'
+EXCLUDE_FILE = DIRECTORY + 'exclude.txt'
 excludelist = []
 
 def getClients():
@@ -59,13 +62,13 @@ def sendToSlack(number):
 if __name__ == '__main__':
     prev = 0
     try:
-        with open('/home/jzplusplus/presence/prev.txt') as f:
+        with open(PREV_FILE) as f:
             prev = int(f.readline())
     except FileNotFoundError:
         pass
 
     try:
-        with open('/home/jzplusplus/presence/exclude.txt') as f:
+        with open(EXCLUDE_FILE) as f:
             for line in f:
                 excludelist.append(line.strip())
     except FileNotFoundError:
@@ -82,7 +85,7 @@ if __name__ == '__main__':
         else: print(x['oui'] + ': ' + str(last_seen))
 
     if num != prev:
-        with open('/home/jzplusplus/presence/prev.txt', 'w') as f:
+        with open(PREV_FILE) as f:
             f.write(str(num))
         sendToSlack(num)
         print('Slack message sent')
