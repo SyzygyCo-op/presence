@@ -1,6 +1,7 @@
 import requests
 import sys
 import datetime
+import os
 
 DIRECTORY = os.path.dirname(os.path.realpath(__file__)) + '/'
 sys.path.append(DIRECTORY)
@@ -85,7 +86,7 @@ if __name__ == '__main__':
         else: print(x['oui'] + ': ' + str(last_seen))
 
     if num != prev:
-        with open(PREV_FILE) as f:
+        with open(PREV_FILE, 'w') as f:
             f.write(str(num))
         sendToSlack(num)
         print('Slack message sent')
